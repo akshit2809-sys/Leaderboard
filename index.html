@@ -100,7 +100,7 @@ ol.board{list-style:none;margin:0;padding:0}
 ul.feed{list-style:none;margin:0;padding:0;font-size:14px;color:var(--mute)}
 ul.feed li{padding:7px 0 7px 18px;border-bottom:1px dashed var(--line);position:relative}
 ul.feed li::before{content:"";position:absolute;left:2px;top:15px;width:8px;height:8px;border-radius:50%;background:var(--a4)}
-footer{margin-top:36px;color:var(--mute);font-size:13px}
+footer{margin-top:36px;color:var(--mute);font-size:13px} .flinks{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px}.flinks a{color:var(--a1);font-weight:600}
 @media (max-width:520px){.row2{grid-template-columns:1fr}.item{grid-template-columns:40px 1fr auto}.p1 .rank,.p2 .rank,.p3 .rank{font-size:28px}}
 @media (prefers-reduced-motion:no-preference){
   .p1{animation:flow 5s linear infinite}
@@ -157,7 +157,7 @@ footer{margin-top:36px;color:var(--mute);font-size:13px}
 
   <h2>Latest activity</h2>
   <ul class="feed" id="feed"></ul>
-  <footer><span id="stats"></span></footer>
+  <footer><span id="stats"></span>     <nav class="flinks" aria-label="Site pages"><a href="/contact.html">Contact</a></nav>   </footer>
 </div>
 
 <script>

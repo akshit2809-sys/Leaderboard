@@ -100,7 +100,7 @@ ol.board{list-style:none;margin:0;padding:0}
 ul.feed{list-style:none;margin:0;padding:0;font-size:14px;color:var(--mute)}
 ul.feed li{padding:7px 0 7px 18px;border-bottom:1px dashed var(--line);position:relative}
 ul.feed li::before{content:"";position:absolute;left:2px;top:15px;width:8px;height:8px;border-radius:50%;background:var(--a4)}
-footer{margin-top:36px;color:var(--mute);font-size:13px} .flinks{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px}.flinks a{color:var(--a1);font-weight:600}
+footer{margin-top:36px;color:var(--mute);font-size:13px} .search{margin:0 0 14px}.sr{background:var(--card);border-left:6px solid var(--a2);border-radius:10px;padding:10px 12px;margin-top:8px} .flinks{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px}.flinks a{color:var(--a1);font-weight:600}
 @media (max-width:520px){.row2{grid-template-columns:1fr}.item{grid-template-columns:40px 1fr auto}.p1 .rank,.p2 .rank,.p3 .rank{font-size:28px}}
 @media (prefers-reduced-motion:no-preference){
   .p1{animation:flow 5s linear infinite}
@@ -151,7 +151,7 @@ footer{margin-top:36px;color:var(--mute);font-size:13px} .flinks{display:flex;ga
     </div>
   </section>
 
-  <h2>Leaderboard</h2>
+  <h2>Leaderboard</h2> <div class="search"><label>Find your rank<input id="q" type="search" placeholder="Search by name or website" autocomplete="off"></label><div id="sres" aria-live="polite"></div></div>
   <ol class="board" id="board"><li class="pitch">Loading the leaderboard…</li></ol>
   <div class="actions" style="margin-top:14px"><button class="btn ghost" id="more" type="button" hidden>Show more</button></div>
 
@@ -316,7 +316,7 @@ footer{margin-top:36px;color:var(--mute);font-size:13px} .flinks{display:flex;ga
     justPaid=null;lastTop=topNow;
     prev.rank=newRank;prev.total=newTotal;first=false;
 
-    $('more').hidden=rows.length<=shown;
+    $('more').hidden=rows.length<=shown; doSearch();
     var f=$('feed');f.textContent='';
     if(!feed.length)f.appendChild(el('li',null,'No payments yet.'));
     feed.forEach(function(p){f.appendChild(el('li',null,((p.listings&&p.listings.name)||'A listing')+' paid '+p.amount+' credits · '+ago(p.created_at)))});
@@ -346,7 +346,7 @@ footer{margin-top:36px;color:var(--mute);font-size:13px} .flinks{display:flex;ga
     $('form').scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});
     $('name').focus({preventScroll:true});
   });
-  $('more').addEventListener('click',function(){shown+=PAGE;load()});
+  $('more').addEventListener('click',function(){shown+=PAGE;load()}); function doSearch(){   var raw=$('q').value.trim(),q=raw.toLowerCase(),out=$('sres');   out.textContent='';   if(!q)return;   var hits=[];   rows.forEach(function(l,i){     if(l.name.toLowerCase().indexOf(q)>-1||host(l.url).toLowerCase().indexOf(q)>-1)hits.push({l:l,rank:i+1});   });   if(!hits.length){out.appendChild(el('div','sr','No listing found for “'+raw+'”.'));return}   hits.slice(0,5).forEach(function(h){     var d=el('div','sr');     d.appendChild(el('strong',null,'#'+h.rank+' '+h.l.name));     var tail=h.rank>1?(rows[h.rank-2].total_paid-h.l.total_paid+1)+' to pass #'+(h.rank-1)+', '+(rows[0].total_paid-h.l.total_paid+1)+' to take #1':'currently #1';     d.appendChild(el('span',null,' · '+h.l.total_paid+' credits · '+tail));     out.appendChild(d);   }); } $('q').addEventListener('input',doSearch);
   $('snd').addEventListener('click',function(){soundOn=!soundOn;this.textContent=soundOn?'🔊 Sound on':'🔇 Sound off';beep([660])});
   $('theme').addEventListener('click',function(){
     var r=document.documentElement,cur=r.getAttribute('data-theme');

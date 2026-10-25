@@ -12,6 +12,7 @@
 :root{
   --bg:#e8edf1; --card:#f8fafb; --ink:#13213a; --mute:#5b6a82; --line:#c9d3de;
   --paddle:#e4432a; --paddle-ink:#fff; --ok:#1d7a4d;
+  --gold:#a87a00; --silver:#6f7c8e; --bronze:#a1602a;
   --display:'Bricolage Grotesque','Arial Narrow',Arial,sans-serif;
   --body:'Instrument Sans',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
   color-scheme:light;
@@ -19,17 +20,21 @@
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
     --bg:#0f1829; --card:#16233b; --ink:#e8eef7; --mute:#93a3bd; --line:#2a3a58;
-    --paddle:#ff6a4f; --paddle-ink:#1a0b07; --ok:#5fd09a; color-scheme:dark;
+    --paddle:#ff6a4f; --paddle-ink:#1a0b07; --ok:#5fd09a;
+    --gold:#f0c24b; --silver:#b4c0d0; --bronze:#d9955a; color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
   --bg:#0f1829; --card:#16233b; --ink:#e8eef7; --mute:#93a3bd; --line:#2a3a58;
-  --paddle:#ff6a4f; --paddle-ink:#1a0b07; --ok:#5fd09a; color-scheme:dark;
+  --paddle:#ff6a4f; --paddle-ink:#1a0b07; --ok:#5fd09a;
+  --gold:#f0c24b; --silver:#b4c0d0; --bronze:#d9955a; color-scheme:dark;
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 var(--body)}
 .wrap{max-width:760px;margin:0 auto;padding:20px 16px 56px}
 .demo{background:var(--ink);color:var(--bg);font-size:14px;padding:8px 16px;text-align:center}
+#news{background:var(--paddle);color:var(--paddle-ink);font:800 16px var(--display);text-align:center;max-height:0;overflow:hidden;padding:0 16px;transition:max-height .35s ease,padding .35s ease}
+#news.show{max-height:60px;padding:12px 16px}
 header.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:8px 0 20px}
 .brand{font:800 26px/1 var(--display);letter-spacing:-.02em}
 button,input,textarea{font:inherit;color:inherit}
@@ -55,9 +60,16 @@ textarea{resize:vertical;min-height:60px}
 .msg.err{color:var(--paddle)} .msg.ok{color:var(--ok)}
 h2{font:800 22px var(--display);margin:32px 0 10px;letter-spacing:-.01em}
 ol.board{list-style:none;margin:0;padding:0;border-top:2px solid var(--ink)}
-.item{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
-.rank{font:800 26px var(--display);color:var(--mute);font-variant-numeric:tabular-nums}
-.item:first-child .rank{color:var(--paddle);font-size:34px}
+.item{position:relative;overflow:hidden;display:grid;grid-template-columns:48px 1fr auto;gap:12px;align-items:center;padding:14px 8px 14px 12px;border-bottom:1px solid var(--line);border-left:4px solid transparent}
+.rank{font:800 26px var(--display);color:var(--mute);font-variant-numeric:tabular-nums;line-height:1}
+.mv{display:block;font:600 12px var(--body);margin-top:4px;color:var(--mute)}
+.mv.up{color:var(--ok)}
+.p1{background:var(--card);border:2px solid var(--gold);border-radius:6px;margin:10px 0;padding:20px 14px}
+.p1 .rank{color:var(--gold);font-size:40px}
+.p1 .name{font-size:20px}
+.p1 .amt .v{font-size:30px}
+.p2{border-left-color:var(--silver)} .p2 .rank{color:var(--silver);font-size:32px}
+.p3{border-left-color:var(--bronze)} .p3 .rank{color:var(--bronze);font-size:30px}
 .name{font-weight:600;font-size:17px;word-break:break-word}
 .name a{color:inherit;text-decoration:none;border-bottom:1px solid var(--line)}
 .name a:hover{border-color:var(--paddle)}
@@ -71,11 +83,18 @@ ol.board{list-style:none;margin:0;padding:0;border-top:2px solid var(--ink)}
 ul.feed{list-style:none;margin:0;padding:0;font-size:14px;color:var(--mute)}
 ul.feed li{padding:6px 0;border-bottom:1px dashed var(--line)}
 footer{margin-top:36px;color:var(--mute);font-size:13px;display:flex;gap:16px;flex-wrap:wrap}
-@media (max-width:520px){.row2{grid-template-columns:1fr}.item{grid-template-columns:34px 1fr auto}}
+@media (max-width:520px){.row2{grid-template-columns:1fr}.item{grid-template-columns:38px 1fr auto}.p1 .rank{font-size:32px}}
+@media (prefers-reduced-motion:no-preference){
+  .p1::after{content:"";position:absolute;top:0;bottom:0;left:-40%;width:30%;background:linear-gradient(100deg,transparent,color-mix(in srgb,var(--gold) 28%,transparent),transparent);transform:skewX(-18deg);animation:sheen 6s ease-in-out infinite;pointer-events:none}
+  @keyframes sheen{0%,70%{left:-40%}100%{left:130%}}
+  .pulse{animation:pulse 1.2s ease-out}
+  @keyframes pulse{from{background-color:color-mix(in srgb,var(--paddle) 24%,transparent)}to{background-color:transparent}}
+}
 </style>
 </head>
 <body>
 <div class="demo">Play-money mode: credits are not real money and nothing is charged. Each payment is capped at 100 credits.</div>
+<div id="news" role="status" aria-live="polite"></div>
 <div class="wrap">
   <header class="top">
     <div class="brand">Top Spot</div>
@@ -116,12 +135,30 @@ footer{margin-top:36px;color:var(--mute);font-size:13px;display:flex;gap:16px;fl
   var SB='https://ktbvylebworucfcmlnhc.supabase.co';
   var KEY='sb_publishable_d2AJBW1DIpcYXUJnLeFJ-Q_-DKFvDHV';
   var CAP=100, PAGE=20, shown=PAGE, rows=[], busy=false;
+  var prev={rank:{},total:{},beat:null}, lastTop=null, first=true, newsTimer=null;
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var $=function(id){return document.getElementById(id)};
   function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
   function say(t,c){var m=$('msg');m.textContent=t;m.className='msg '+(c||'')}
   function host(u){try{return new URL(u).hostname.replace(/^www\./,'')}catch(e){return u}}
   function cleanUrl(u){try{var x=new URL(u);return(x.protocol==='http:'||x.protocol==='https:')?x.href:null}catch(e){return null}}
   function ago(t){var s=Math.max(1,Math.round((Date.now()-new Date(t).getTime())/1000));if(s<60)return 'just now';var m=Math.round(s/60);if(m<60)return m+' min ago';var h=Math.round(m/60);if(h<24)return h+' h ago';return Math.round(h/24)+' d ago'}
+
+  function countTo(node,from,to){
+    if(reduce||from==null||from===to){node.textContent=to;return}
+    var start=null,dur=650;
+    function step(t){
+      if(start===null)start=t;
+      var p=Math.min(1,(t-start)/dur),e=1-Math.pow(1-p,3);
+      node.textContent=Math.round(from+(to-from)*e);
+      if(p<1)requestAnimationFrame(step);else node.textContent=to;
+    }
+    requestAnimationFrame(step);
+  }
+  function announce(name){
+    var n=$('news');n.textContent='“'+name+'” just took #1';n.classList.add('show');
+    clearTimeout(newsTimer);newsTimer=setTimeout(function(){n.classList.remove('show')},7000);
+  }
 
   function api(path,opts){
     opts=opts||{};
@@ -141,13 +178,24 @@ footer{margin-top:36px;color:var(--mute);font-size:13px;display:flex;gap:16px;fl
   }
 
   function render(feed){
+    var oldPos={};
+    document.querySelectorAll('#board li[data-id]').forEach(function(li){oldPos[li.dataset.id]=li.getBoundingClientRect().top});
+
     var top=rows.length?rows[0].total_paid:0;
-    $('beat').textContent=top+1;
+    countTo($('beat'),prev.beat,top+1);prev.beat=top+1;
+
     var ol=$('board');ol.textContent='';
     if(!rows.length)ol.appendChild(el('li','pitch','No listings yet. Be the first to claim #1.'));
+    var newRank={},newTotal={},pulses=[];
     rows.slice(0,shown).forEach(function(l,i){
-      var li=el('li','item');
-      li.appendChild(el('div','rank',i+1));
+      var pos=i+1,medal=pos<=3?' p'+pos:'';
+      var li=el('li','item'+medal);li.dataset.id=l.id;
+      var rk=el('div');rk.appendChild(el('div','rank',pos));
+      var old=prev.rank[l.id];
+      if(!first&&old!==undefined&&old!==pos){
+        rk.appendChild(el('span','mv'+(old>pos?' up':''),(old>pos?'▲ ':'▼ ')+Math.abs(old-pos)));
+      }
+      li.appendChild(rk);
       var mid=el('div');var nm=el('div','name');
       var a=el('a',null,l.name);a.href=cleanUrl(l.url)||'#';a.target='_blank';a.rel='noopener noreferrer nofollow';
       a.addEventListener('click',function(){click(l)});
@@ -155,7 +203,11 @@ footer{margin-top:36px;color:var(--mute);font-size:13px;display:flex;gap:16px;fl
       if(l.pitch)mid.appendChild(el('div','pitch',l.pitch));
       mid.appendChild(el('div','meta',host(l.url)+' · '+l.clicks+' clicks'));
       li.appendChild(mid);
-      var r=el('div','amt');r.appendChild(el('div','v',l.total_paid));
+      var r=el('div','amt');var v=el('div','v');
+      var pt=prev.total[l.id];
+      if(!first&&pt!==undefined&&pt!==l.total_paid){countTo(v,pt,l.total_paid);pulses.push(li)}
+      else{v.textContent=l.total_paid;if(!first&&old!==undefined&&old>pos)pulses.push(li)}
+      r.appendChild(v);
       if(i>0){
         var need=rows[i-1].total_paid-l.total_paid+1;
         var amt=Math.min(need,CAP);
@@ -164,7 +216,23 @@ footer{margin-top:36px;color:var(--mute);font-size:13px;display:flex;gap:16px;fl
         r.appendChild(b);
       }
       li.appendChild(r);ol.appendChild(li);
+      newRank[l.id]=pos;newTotal[l.id]=l.total_paid;
     });
+
+    if(!reduce){
+      ol.querySelectorAll('li[data-id]').forEach(function(li){
+        var o=oldPos[li.dataset.id];
+        if(o===undefined)return;
+        var dy=o-li.getBoundingClientRect().top;
+        if(Math.abs(dy)>2)li.animate([{transform:'translateY('+dy+'px)'},{transform:'none'}],{duration:550,easing:'cubic-bezier(.2,.7,.2,1)'});
+      });
+      pulses.forEach(function(li){li.classList.add('pulse');li.addEventListener('animationend',function(){li.classList.remove('pulse')},{once:true})});
+    }
+
+    if(!first&&rows.length&&lastTop&&rows[0].id!==lastTop)announce(rows[0].name);
+    lastTop=rows.length?rows[0].id:null;
+    prev.rank=newRank;prev.total=newTotal;first=false;
+
     $('more').hidden=rows.length<=shown;
     var f=$('feed');f.textContent='';
     if(!feed.length)f.appendChild(el('li',null,'No payments yet.'));
@@ -193,7 +261,7 @@ footer{margin-top:36px;color:var(--mute);font-size:13px;display:flex;gap:16px;fl
     $('amount').value=Math.min(need,CAP);
     say(need<=CAP?'Amount set to '+need+', enough to take #1.':'Taking #1 needs '+need+' credits. One payment is capped at '+CAP+', so claim now and use “Add” on your listing to keep climbing.');
   });
-  $('more').addEventListener('click',function(){shown+=PAGE;render([]);load()});
+  $('more').addEventListener('click',function(){shown+=PAGE;load()});
   $('theme').addEventListener('click',function(){
     var r=document.documentElement,cur=r.getAttribute('data-theme');
     var dark=cur?cur==='dark':window.matchMedia('(prefers-color-scheme:dark)').matches;

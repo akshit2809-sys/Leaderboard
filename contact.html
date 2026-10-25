@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Contact Us · Top Spot</title>
+<meta name="description" content="How to reach the team behind Top Spot.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Instrument+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f3eeff; --card:#ffffff; --ink:#1e1147; --mute:#6a5f8f; --line:#ddd3f7;
+  --a1:#6c3cf0; --a2:#ff3d8b;
+  --display:'Bricolage Grotesque','Arial Narrow',Arial,sans-serif;
+  --body:'Instrument Sans',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#140b33; --card:#1f1450; --ink:#f1ebff; --mute:#a99bd6; --line:#35266f; --a1:#8f6bff; --a2:#ff5fa2; color-scheme:dark}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--body)}
+.wrap{max-width:680px;margin:0 auto;padding:24px 16px 56px}
+.back{display:inline-block;margin-bottom:18px;color:var(--a1);font-weight:600;text-decoration:none}
+.back:hover{text-decoration:underline}
+h1{font:800 clamp(30px,7vw,42px)/1.1 var(--display);letter-spacing:-.02em;margin:0 0 8px}
+.lead{color:var(--mute);margin:0 0 24px}
+.card{background:var(--card);border:2px solid var(--line);border-radius:12px;padding:18px 18px 4px;margin-bottom:16px}
+.card h2{font:800 18px var(--display);margin:0 0 4px}
+.card p{margin:0 0 14px}
+a{color:var(--a1)}
+.small{color:var(--mute);font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="/">← Back to the leaderboard</a>
+  <h1>Contact us</h1>
+  <p class="lead">Questions about a listing, a payment or a refund? Write to us and we’ll get back to you.</p>
+
+  <div class="card">
+    <h2>Email</h2>
+    <p><a href="mailto:[support@yourdomain.com]">[support@yourdomain.com]</a></p>
+    <p class="small">We aim to reply within [2 business days]. For payment questions, please include your listing’s website address and the email used at checkout.</p>
+  </div>
+
+  <div class="card">
+    <h2>Business details</h2>
+    <p><strong>[Company Legal Name]</strong><br>
+    [Registered office address, city, state, PIN code], India<br>
+    CIN: [Company Identification Number]</p>
+    <p class="small">Top Spot is operated by the company named above.</p>
+  </div>
+
+  <div class="card">
+    <h2>Report a listing</h2>
+    <p>If a listing breaks our rules or looks harmful, email us with the website address and what is wrong. We review reports and remove listings that don’t follow the rules.</p>
+  </div>
+</div>
+</body>
+</html>

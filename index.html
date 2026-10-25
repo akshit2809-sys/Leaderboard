@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Top Spot: one list, one #1 spot</title>
+<meta name="description" content="A public leaderboard. Pay to rank, outbid whoever is on top.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Instrument+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#e8edf1; --card:#f8fafb; --ink:#13213a; --mute:#5b6a82; --line:#c9d3de;
+  --paddle:#e4432a; --paddle-ink:#fff; --ok:#1d7a4d;
+  --display:'Bricolage Grotesque','Arial Narrow',Arial,sans-serif;
+  --body:'Instrument Sans',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f1829; --card:#16233b; --ink:#e8eef7; --mute:#93a3bd; --line:#2a3a58;
+    --paddle:#ff6a4f; --paddle-ink:#1a0b07; --ok:#5fd09a; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f1829; --card:#16233b; --ink:#e8eef7; --mute:#93a3bd; --line:#2a3a58;
+  --paddle:#ff6a4f; --paddle-ink:#1a0b07; --ok:#5fd09a; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 var(--body)}
+.wrap{max-width:760px;margin:0 auto;padding:20px 16px 56px}
+.demo{background:var(--ink);color:var(--bg);font-size:14px;padding:8px 16px;text-align:center}
+header.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:8px 0 20px}
+.brand{font:800 26px/1 var(--display);letter-spacing:-.02em}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+.link{background:none;border:0;color:var(--mute);text-decoration:underline;padding:0;font-size:14px}
+:focus-visible{outline:3px solid var(--paddle);outline-offset:2px}
+.hero{background:var(--card);border:2px solid var(--ink);border-radius:6px;padding:22px 20px}
+.hero h1{margin:0 0 4px;font:800 clamp(30px,7vw,46px)/1.05 var(--display);letter-spacing:-.025em}
+.hero p{margin:0 0 16px;color:var(--mute)}
+.beat{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.beat .n{font:800 clamp(44px,12vw,72px)/1 var(--display);color:var(--paddle);font-variant-numeric:tabular-nums;letter-spacing:-.03em}
+.beat span{color:var(--mute)}
+form{display:grid;gap:10px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label{display:grid;gap:4px;font-size:14px;font-weight:600}
+input,textarea{background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:10px;width:100%}
+textarea{resize:vertical;min-height:60px}
+.btn{background:var(--paddle);color:var(--paddle-ink);border:0;border-radius:4px;padding:12px 16px;font-weight:600}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+.msg{min-height:22px;font-size:14px;margin-top:8px}
+.msg.err{color:var(--paddle)} .msg.ok{color:var(--ok)}
+h2{font:800 22px var(--display);margin:32px 0 10px;letter-spacing:-.01em}
+ol.board{list-style:none;margin:0;padding:0;border-top:2px solid var(--ink)}
+.item{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+.rank{font:800 26px var(--display);color:var(--mute);font-variant-numeric:tabular-nums}
+.item:first-child .rank{color:var(--paddle);font-size:34px}
+.name{font-weight:600;font-size:17px;word-break:break-word}
+.name a{color:inherit;text-decoration:none;border-bottom:1px solid var(--line)}
+.name a:hover{border-color:var(--paddle)}
+.pitch{color:var(--mute);font-size:14px;word-break:break-word}
+.meta{color:var(--mute);font-size:13px}
+.amt{text-align:right}
+.amt .v{font:800 22px var(--display);font-variant-numeric:tabular-nums}
+.amt button{margin-top:4px;font-size:13px;padding:5px 9px;border-radius:4px;background:transparent;border:1px solid var(--ink)}
+.amt button:hover:not(:disabled){background:var(--ink);color:var(--bg)}
+.amt button:disabled{opacity:.5}
+ul.feed{list-style:none;margin:0;padding:0;font-size:14px;color:var(--mute)}
+ul.feed li{padding:6px 0;border-bottom:1px dashed var(--line)}
+footer{margin-top:36px;color:var(--mute);font-size:13px;display:flex;gap:16px;flex-wrap:wrap}
+@media (max-width:520px){.row2{grid-template-columns:1fr}.item{grid-template-columns:34px 1fr auto}}
+</style>
+</head>
+<body>
+<div class="demo">Play-money mode: credits are not real money and nothing is charged. Each payment is capped at 100 credits.</div>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">Top Spot</div>
+    <button class="link" id="theme" type="button">Switch light/dark</button>
+  </header>
+
+  <section class="hero" aria-labelledby="h">
+    <h1 id="h">One list. One #1 spot. Outbid whoever is on top.</h1>
+    <p>Rank is total credits paid. Pay again any time to climb. New listings appear once approved.</p>
+    <div class="beat"><span>Price to take #1:</span><div class="n" id="beat">1</div><span>credits</span></div>
+    <form id="form" novalidate>
+      <div class="row2">
+        <label>Name<input id="name" maxlength="60" required placeholder="Your product"></label>
+        <label>URL<input id="url" type="url" required placeholder="https://yourproduct.com"></label>
+      </div>
+      <label>One-line pitch<textarea id="pitch" maxlength="140" placeholder="What does it do, in one line?"></textarea></label>
+      <label>Credits to pay (1 to 100)<input id="amount" type="number" min="1" max="100" step="1" required value="1"></label>
+      <div class="actions">
+        <button class="btn" type="submit" id="go">Claim a rank</button>
+        <button class="btn ghost" type="button" id="takeTop">Fill amount to take #1</button>
+      </div>
+      <div class="msg" id="msg" role="status" aria-live="polite"></div>
+    </form>
+  </section>
+
+  <h2>Leaderboard</h2>
+  <ol class="board" id="board"><li class="pitch">Loading the leaderboard…</li></ol>
+  <div class="actions" style="margin-top:14px"><button class="btn ghost" id="more" type="button" hidden>Show more</button></div>
+
+  <h2>Latest activity</h2>
+  <ul class="feed" id="feed"></ul>
+
+  <footer><span id="stats"></span></footer>
+</div>
+
+<script>
+(function(){
+  var SB='https://ktbvylebworucfcmlnhc.supabase.co';
+  var KEY='sb_publishable_d2AJBW1DIpcYXUJnLeFJ-Q_-DKFvDHV';
+  var CAP=100, PAGE=20, shown=PAGE, rows=[], busy=false;
+  var $=function(id){return document.getElementById(id)};
+  function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
+  function say(t,c){var m=$('msg');m.textContent=t;m.className='msg '+(c||'')}
+  function host(u){try{return new URL(u).hostname.replace(/^www\./,'')}catch(e){return u}}
+  function cleanUrl(u){try{var x=new URL(u);return(x.protocol==='http:'||x.protocol==='https:')?x.href:null}catch(e){return null}}
+  function ago(t){var s=Math.max(1,Math.round((Date.now()-new Date(t).getTime())/1000));if(s<60)return 'just now';var m=Math.round(s/60);if(m<60)return m+' min ago';var h=Math.round(m/60);if(h<24)return h+' h ago';return Math.round(h/24)+' d ago'}
+
+  function api(path,opts){
+    opts=opts||{};
+    var h={apikey:KEY,'Content-Type':'application/json'};
+    return fetch(SB+path,{method:opts.method||'GET',headers:h,body:opts.body?JSON.stringify(opts.body):undefined})
+      .then(function(r){return r.text().then(function(t){var d=null;try{d=t?JSON.parse(t):null}catch(e){}
+        if(!r.ok){var err=new Error((d&&d.message)||'Request failed');err.code=d&&d.code;throw err}
+        return d})});
+  }
+
+  function load(){
+    return Promise.all([
+      api('/rest/v1/listings?select=id,name,url,pitch,total_paid,clicks,created_at&order=total_paid.desc,created_at.asc&limit=500'),
+      api('/rest/v1/payments?select=amount,created_at,listings(name)&order=created_at.desc&limit=6')
+    ]).then(function(r){rows=r[0]||[];render(r[1]||[])})
+      .catch(function(){$('board').textContent='';$('board').appendChild(el('li','pitch','Could not load the leaderboard. Check your connection and refresh.'))});
+  }
+
+  function render(feed){
+    var top=rows.length?rows[0].total_paid:0;
+    $('beat').textContent=top+1;
+    var ol=$('board');ol.textContent='';
+    if(!rows.length)ol.appendChild(el('li','pitch','No listings yet. Be the first to claim #1.'));
+    rows.slice(0,shown).forEach(function(l,i){
+      var li=el('li','item');
+      li.appendChild(el('div','rank',i+1));
+      var mid=el('div');var nm=el('div','name');
+      var a=el('a',null,l.name);a.href=cleanUrl(l.url)||'#';a.target='_blank';a.rel='noopener noreferrer nofollow';
+      a.addEventListener('click',function(){click(l)});
+      nm.appendChild(a);mid.appendChild(nm);
+      if(l.pitch)mid.appendChild(el('div','pitch',l.pitch));
+      mid.appendChild(el('div','meta',host(l.url)+' · '+l.clicks+' clicks'));
+      li.appendChild(mid);
+      var r=el('div','amt');r.appendChild(el('div','v',l.total_paid));
+      if(i>0){
+        var need=rows[i-1].total_paid-l.total_paid+1;
+        var amt=Math.min(need,CAP);
+        var b=el('button',null,need<=CAP?'Climb for '+need:'Add '+CAP+' to climb');b.type='button';
+        b.addEventListener('click',function(){topUp(l,amt,b)});
+        r.appendChild(b);
+      }
+      li.appendChild(r);ol.appendChild(li);
+    });
+    $('more').hidden=rows.length<=shown;
+    var f=$('feed');f.textContent='';
+    if(!feed.length)f.appendChild(el('li',null,'No payments yet.'));
+    feed.forEach(function(p){f.appendChild(el('li',null,((p.listings&&p.listings.name)||'A listing')+' paid '+p.amount+' credits · '+ago(p.created_at)))});
+    var c=0,t=0;rows.forEach(function(l){c+=l.clicks;t+=l.total_paid});
+    $('stats').textContent=rows.length+' listings · '+c+' clicks · '+t+' play credits paid';
+  }
+
+  function click(l){
+    var k='clk-'+l.id,last=0;
+    try{last=Number(localStorage.getItem(k))||0}catch(e){}
+    if(Date.now()-last<3600000)return;
+    try{localStorage.setItem(k,String(Date.now()))}catch(e){}
+    api('/rest/v1/rpc/record_click',{method:'POST',body:{p_listing:l.id}}).catch(function(){});
+  }
+
+  function topUp(l,amt,btn){
+    btn.disabled=true;
+    api('/rest/v1/rpc/add_payment',{method:'POST',body:{p_listing:l.id,p_amount:amt}})
+      .then(function(){say('Paid '+amt+' credits for '+l.name+'.','ok');return load()})
+      .catch(function(e){say('Payment failed: '+e.message,'err');btn.disabled=false});
+  }
+
+  $('takeTop').addEventListener('click',function(){
+    var need=(rows.length?rows[0].total_paid:0)+1;
+    $('amount').value=Math.min(need,CAP);
+    say(need<=CAP?'Amount set to '+need+', enough to take #1.':'Taking #1 needs '+need+' credits. One payment is capped at '+CAP+', so claim now and use “Add” on your listing to keep climbing.');
+  });
+  $('more').addEventListener('click',function(){shown+=PAGE;render([]);load()});
+  $('theme').addEventListener('click',function(){
+    var r=document.documentElement,cur=r.getAttribute('data-theme');
+    var dark=cur?cur==='dark':window.matchMedia('(prefers-color-scheme:dark)').matches;
+    r.setAttribute('data-theme',dark?'light':'dark');
+  });
+
+  $('form').addEventListener('submit',function(e){
+    e.preventDefault();
+    if(busy)return;
+    var name=$('name').value.trim(),url=cleanUrl($('url').value.trim()),pitch=$('pitch').value.trim(),amt=Number($('amount').value);
+    if(!name){say('Add a name for your listing.','err');return}
+    if(!url){say('Enter a full URL starting with https:// or http://.','err');return}
+    if(!(amt>=1&&amt<=CAP)||amt!==Math.floor(amt)){say('Enter a whole number of credits from 1 to '+CAP+'.','err');return}
+    busy=true;$('go').disabled=true;say('Submitting…');
+    api('/rest/v1/rpc/submit_listing',{method:'POST',body:{p_name:name,p_url:url,p_pitch:pitch,p_amount:amt}})
+      .then(function(){
+        say('Submitted. Your listing appears on the board once it is approved.','ok');
+        $('name').value='';$('url').value='';$('pitch').value='';
+      })
+      .catch(function(err){
+        if(err.code==='23505')say('That URL is already listed or waiting for approval.','err');
+        else say('Could not submit: '+err.message,'err');
+      })
+      .then(function(){busy=false;$('go').disabled=false});
+  });
+
+  load();
+  setInterval(function(){if(!document.hidden)load()},30000);
+})();
+</script>
+</body>
+</html>

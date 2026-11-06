@@ -16,12 +16,12 @@
   --display:'Bricolage Grotesque','Arial Narrow',Arial,sans-serif;
   --body:'Instrument Sans',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color-scheme:light}
 @media (prefers-color-scheme:dark){:root{--bg:#140b33;--card:#1f1450;--ink:#f1ebff;--mute:#a99bd6;--line:#35266f;--a1:#8f6bff;--a2:#ff5fa2;--a3:#ffad3d;--a4:#2ee6c8;color-scheme:dark}
-.ld{display:none!important}.lw{display:block!important}}
+:root .top .ld{display:none}:root .top .lw{display:block}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.65 var(--body)}
 .wrap{max-width:760px;margin:0 auto;padding:22px 16px 60px}
 .top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}
-.top img{height:36px;width:auto;display:block}.lw{display:none}
+.top img{height:36px;width:auto;display:block}.top .lw{display:none}
 a{color:var(--a1)}.back{font-weight:600;text-decoration:none}.back:hover{text-decoration:underline}
 .hero{background:linear-gradient(135deg,#6c3cf0,#ff3d8b 62%,#ff9a1f);color:#fff;border-radius:16px;padding:26px 22px}
 .hero h1{font:800 clamp(30px,7vw,44px)/1.05 var(--display);letter-spacing:-.02em;margin:0 0 8px}
@@ -54,7 +54,6 @@ th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}th{co
   </section>
 
   <!-- DEMO NOTICE: delete this whole box when live payments start -->
-  <div class="note"><strong>Heads up:</strong> Peakfy is in play-money mode for now. Credits are not real money and nothing is charged. These rules describe how the game works, and the same rules apply when live payments begin.</div>
 
   <nav class="toc" aria-label="On this page"><a href="#play">How to play</a><a href="#ranking">Ranking</a><a href="#climb">Climbing</a><a href="#listing">Your listing</a><a href="#sharing">Sharing</a><a href="#allowed">What you can list</a><a href="#after">After you pay</a></nav>
 

@@ -3,104 +3,167 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Rules · Peakfy</title>
-<meta name="description" content="What can and can't be listed on Peakfy.">
+<title>Rules of the game · Peakfy</title>
+<meta name="description" content="How to play Peakfy: how ranking works, how to climb, and what can be listed.">
+<link rel="icon" href="/peakfy-icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Instrument+Sans:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f3eeff; --card:#ffffff; --ink:#1e1147; --mute:#6a5f8f; --line:#ddd3f7;
-  --a1:#6c3cf0; --a2:#ff3d8b;
+  --bg:#f3eeff;--card:#fff;--ink:#1e1147;--mute:#5b4f86;--line:#ddd3f7;--a1:#6c3cf0;--a2:#ff3d8b;--a3:#ff9a1f;--a4:#00a58e;
   --display:'Bricolage Grotesque','Arial Narrow',Arial,sans-serif;
-  --body:'Instrument Sans',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
-  color-scheme:light;
-}
-@media (prefers-color-scheme:dark){
-  :root{--bg:#140b33; --card:#1f1450; --ink:#f1ebff; --mute:#a99bd6; --line:#35266f; --a1:#8f6bff; --a2:#ff5fa2; color-scheme:dark}
-}
+  --body:'Instrument Sans',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#140b33;--card:#1f1450;--ink:#f1ebff;--mute:#a99bd6;--line:#35266f;--a1:#8f6bff;--a2:#ff5fa2;--a3:#ffad3d;--a4:#2ee6c8;color-scheme:dark}
+.ld{display:none!important}.lw{display:block!important}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.65 var(--body)}
-.wrap{max-width:720px;margin:0 auto;padding:24px 16px 56px}
-.back{display:inline-block;margin-bottom:18px;color:var(--a1);font-weight:600;text-decoration:none}
-.back:hover{text-decoration:underline}
-h1{font:800 clamp(30px,7vw,42px)/1.1 var(--display);letter-spacing:-.02em;margin:0 0 6px}
-.lead{color:var(--mute);margin:0 0 24px;font-size:14px}
-.doc{background:var(--card);border:2px solid var(--line);border-radius:12px;padding:8px 20px 12px}
-.doc h2{font:800 19px var(--display);margin:22px 0 6px}
-.doc p,.doc li{margin:0 0 10px}
-.doc ul{padding-left:22px;margin:0 0 10px}
-a{color:var(--a1)}
+.wrap{max-width:760px;margin:0 auto;padding:22px 16px 60px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}
+.top img{height:36px;width:auto;display:block}.lw{display:none}
+a{color:var(--a1)}.back{font-weight:600;text-decoration:none}.back:hover{text-decoration:underline}
+.hero{background:linear-gradient(135deg,#6c3cf0,#ff3d8b 62%,#ff9a1f);color:#fff;border-radius:16px;padding:26px 22px}
+.hero h1{font:800 clamp(30px,7vw,44px)/1.05 var(--display);letter-spacing:-.02em;margin:0 0 8px}
+.hero p{margin:0;opacity:.95}
+.note{background:var(--card);border:2px dashed var(--a3);border-radius:12px;padding:12px 16px;margin:16px 0;font-size:15px}
+.toc{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}
+.toc a{background:var(--card);border:2px solid var(--line);border-radius:99px;padding:4px 14px;font-size:14px;text-decoration:none;color:var(--ink)}
+.toc a:hover{border-color:var(--a1)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:8px 0 6px}
+.steps div{background:var(--card);border-radius:12px;padding:14px;border-top:4px solid var(--a1);font-size:15px}
+.steps div:nth-child(2){border-color:var(--a2)}.steps div:nth-child(3){border-color:var(--a3)}
+.steps b{display:block;font:800 17px var(--display);margin-bottom:2px}
+.doc{background:var(--card);border:2px solid var(--line);border-radius:12px;padding:6px 20px 14px;margin-top:14px}
+h2{font:800 22px var(--display);letter-spacing:-.01em;margin:26px 0 6px;scroll-margin-top:12px}
+.doc h2:first-child{margin-top:16px}
+p,li{margin:0 0 10px}ul,ol{padding-left:22px;margin:0 0 10px}
+table{width:100%;border-collapse:collapse;font-size:15px;margin:6px 0 12px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}th{color:var(--mute);font-weight:600}
+.k{background:color-mix(in srgb,var(--a1) 10%,transparent);border-left:5px solid var(--a1);border-radius:8px;padding:10px 14px;margin:10px 0}
+@media (max-width:560px){.steps{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <a class="back" href="/">← Back to the leaderboard</a>
-  <h1>Rules</h1>
-  <p class="lead">Last updated: October 26, 2026</p>
+  <div class="top"><a href="/"><img class="ld" src="/peakfy-logo.svg" alt="Peakfy"><img class="lw" src="/peakfy-logo-white.svg" alt="Peakfy"></a><a class="back" href="/">← Back to the leaderboard</a></div>
+
+  <section class="hero">
+    <h1>Rules of the game</h1>
+    <p>Peakfy is one public leaderboard. You pay to stand above everyone else, and your rank is what you have paid. Nothing else counts.</p>
+  </section>
+
+  <!-- DEMO NOTICE: delete this whole box when live payments start -->
+  <div class="note"><strong>Heads up:</strong> Peakfy is in play-money mode for now. Credits are not real money and nothing is charged. These rules describe how the game works, and the same rules apply when live payments begin.</div>
+
+  <nav class="toc" aria-label="On this page"><a href="#play">How to play</a><a href="#ranking">Ranking</a><a href="#climb">Climbing</a><a href="#listing">Your listing</a><a href="#sharing">Sharing</a><a href="#allowed">What you can list</a><a href="#after">After you pay</a></nav>
+
+  <h2 id="play" style="margin-top:6px">How to play</h2>
+  <div class="steps"><div><b>1. Add your site</b>Send a name, a link and one line about it.</div><div><b>2. Pay to rank</b>The more you have paid in total, the higher you stand.</div><div><b>3. Climb or defend</b>Anyone can outbid you, so add more whenever you like.</div></div>
 
   <div class="doc">
-    <h2>The short version</h2>
-    <p>List something real, honest and safe. Visitors click your link trusting that it is what you say it is. We remove listings that break that trust.</p>
-
-    <h2>1. What you may list</h2>
+    <h2 id="ranking">One board, one rule</h2>
+    <p>Peakfy has a single global leaderboard. There are no categories, no filters and no seasons. Every listing stands on the same ladder.</p>
     <ul>
-      <li>A working website, app or page that you own or have the right to promote.</li>
-      <li>A name and one-line description that accurately describe what visitors will find there.</li>
-      <li>A link that goes straight to the thing you describe.</li>
+      <li><strong>Rank is your total.</strong> It is everything you have ever paid for a listing, in US dollars. The highest total is #1.</li>
+      <li><strong>Totals never expire or reset.</strong> What you paid last month still counts today.</li>
+      <li><strong>Whole dollars only.</strong> Every payment is a whole number of dollars, at least $1. There is no maximum.</li>
+      <li><strong>Ties go to the first listing.</strong> If two listings have the same total, the one added to Peakfy first keeps the higher rank.</li>
+      <li><strong>Only payments count.</strong> Rank does not depend on how good the product is, how many people click it, or how often it is shared.</li>
+      <li><strong>The board is live.</strong> It refreshes about every 30 seconds while you have the page open.</li>
     </ul>
 
-    <h2>2. What you may not list</h2>
-    <p>The following are not allowed, whether in the link, the name, or the description:</p>
+    <h2 id="climb">Climbing the ladder</h2>
+    <p>The price of a higher rank is simple: the gap between you and the listing you want to pass, plus $1.</p>
     <ul>
-      <li><strong>Illegal content or activity</strong>, including the sale of illegal goods or services, and anything that breaks the laws of India or the place where the content is hosted.</li>
-      <li><strong>Scams and fraud</strong>, such as fake giveaways, pyramid or get-rich-quick schemes, fake investment or “guaranteed return” offers, and impersonation of a person, brand or authority.</li>
-      <li><strong>Malware and phishing</strong>, including sites that try to install software without clear consent, steal passwords, card details or personal information, or trick visitors into handing them over.</li>
-      <li><strong>Sexually explicit or adult content</strong>, and anything that sexualises or exploits minors. The latter will also be reported to the authorities.</li>
-      <li><strong>Hateful, abusive or violent content</strong>, including content that attacks people because of who they are, threatens harm, or promotes terrorism or self-harm.</li>
-      <li><strong>Content that infringes others’ rights</strong>, such as pirated material, counterfeit goods, or the use of someone’s trademark to mislead.</li>
-      <li><strong>Sites that expose private information</strong> about people without their consent.</li>
-      <li><strong>Unlicensed or unlawful gambling, and prohibited financial products or services.</strong></li>
+      <li><strong>Climb for $X</strong> on a row is the exact price to pass the listing directly above that row.</li>
+      <li><strong>Add credits</strong> lets you pay any amount you choose. A live preview shows your new total and the rank it would give you.</li>
+      <li><strong>Price to take #1</strong> at the top of the page is the current #1 total plus $1.</li>
+      <li>Paying less than a full climb still helps. You move up as far as your new total reaches.</li>
+      <li>Paying more than the price gives you a buffer before the next person can pass you.</li>
+    </ul>
+    <p>Here is how it works with a small board:</p>
+    <table>
+      <tr><th>Rank</th><th>Listing</th><th>Total</th></tr>
+      <tr><td>#1</td><td>Alpha</td><td>$500</td></tr>
+      <tr><td>#2</td><td>Beta</td><td>$400</td></tr>
+      <tr><td>#3</td><td>You</td><td>$300</td></tr>
+    </table>
+    <ul>
+      <li>To pass Beta you pay $101 (the $100 gap plus $1). You are now at $401 and #2.</li>
+      <li>To take #1 you pay $201. You are now at $501 and #1.</li>
+      <li>If you pay $150 instead, you reach $450 and move to #2, not #1.</li>
+    </ul>
+    <div class="k"><strong>Your rank is set when your payment completes.</strong> If someone else pays while you are at checkout, you may end up lower than the preview showed. Your full payment still counts toward your total.</div>
+
+    <h2 id="listing">Your listing</h2>
+    <ul>
+      <li><strong>Adding one.</strong> Enter a name (up to 60 characters), your website address, a one-line pitch (up to 140 characters) and an amount, then press <em>Claim a rank</em>.</li>
+      <li><strong>One listing per website.</strong> If your site is already on the board, use <em>Climb</em> or <em>Add credits</em> on its row. The amount is added to the total it already has.</li>
+      <li><strong>Find yourself.</strong> Use the search box above the leaderboard to look up a name or website and see its rank, its total and what it costs to climb.</li>
+      <li><strong>Anyone can pay toward any listing.</strong> A friend, a fan or a rival can add to your total. Payments only ever raise a listing. Nobody can lower yours or take it over.</li>
+      <li><strong>Paid by mistake?</strong> If you entered the wrong name or address, contact us and we will correct it. See the <a href="/refunds.html">Refund Policy</a> for charging errors.</li>
+      <li>New listings may be checked before they appear on the board.</li>
     </ul>
 
-    <h2>3. Honest names and descriptions</h2>
+    <h2 id="sharing">Sharing and the Top referrers board</h2>
+    <p>Every listing has a <strong>Share</strong> button that makes a personal link. When someone opens your link and stays, Peakfy counts them as a visitor you brought in. The side panel ranks listings by visitors brought in over the last 7 days.</p>
     <ul>
-      <li>Do not use misleading claims, false statistics, fake testimonials, or promises you cannot keep.</li>
-      <li>Do not use someone else’s name or brand to suggest a connection that does not exist.</li>
-      <li>Keep descriptions plain: no excessive capital letters, repeated symbols, or spam-style text.</li>
-      <li>Do not put contact details, phone numbers or other links in the name or description fields.</li>
+      <li>A visit counts once per visitor per day, and only after they have stayed a few seconds and scrolled or clicked.</li>
+      <li>Your own visits do not help you, and bots and repeat refreshing do not count.</li>
+      <li>The Top referrers board is for recognition. It has <strong>no effect on rank</strong>, and it carries no cash value or prize.</li>
+      <li>We may highlight the top referrer, and we may correct counts if we see tricks.</li>
     </ul>
 
-    <h2>4. Your link must stay honest</h2>
+    <h2 id="allowed">What you can list</h2>
+    <p>List something real, honest and safe. Visitors click your link trusting that it is what you say it is.</p>
     <ul>
-      <li>Do not redirect visitors to a different site from the one you described, or change what the link leads to after you are listed.</li>
-      <li>Do not use pop-ups, forced downloads, or tricks that make it hard for visitors to leave.</li>
-      <li>A link that stops working for a long time may be removed.</li>
+      <li>A working website, app or page you own or have the right to promote.</li>
+      <li>A name and one-line description that accurately say what visitors will find.</li>
+      <li>A link that goes straight to what you describe, and keeps doing so.</li>
+    </ul>
+    <p><strong>Not allowed</strong>, in the link, the name or the description:</p>
+    <ul>
+      <li>Illegal content or activity, including the sale of illegal goods or services.</li>
+      <li>Scams and fraud: fake giveaways, get-rich-quick or pyramid schemes, fake investment offers, and impersonation of a person, brand or authority.</li>
+      <li>Malware and phishing: sites that install software without clear consent or steal passwords, card details or personal information.</li>
+      <li>Sexually explicit or adult content, and anything that sexualises or exploits minors. The latter is also reported to the authorities.</li>
+      <li>Hateful, abusive or violent content, including threats, terrorism and self-harm promotion.</li>
+      <li>Pirated material, counterfeit goods, or trademarks used to mislead.</li>
+      <li>Sites that expose people’s private information without consent.</li>
+      <li>Unlicensed or unlawful gambling, and prohibited financial products or services.</li>
+      <li>Misleading claims, fake testimonials, contact details or extra links stuffed into the name or description, or spam-style text.</li>
+      <li>Redirecting visitors to a different site from the one you described, or changing what your link leads to after you are listed.</li>
     </ul>
 
-    <h2>5. Fair play</h2>
+    <h2>Fair play</h2>
     <ul>
-      <li>Do not try to break, overload or exploit the Site, or to change your rank by any method other than a genuine payment.</li>
-      <li>Do not submit listings in bulk or use automated tools to do so.</li>
-      <li>Do not submit duplicate listings for the same website.</li>
+      <li>Do not try to break, overload or exploit Peakfy, or change your rank by any method other than a genuine payment.</li>
+      <li>Do not submit listings in bulk, use automated tools, or submit duplicates for the same site.</li>
+      <li>Do not manipulate referral counts.</li>
+      <li>Do not pay with a card or account you do not own, or dispute a genuine charge.</li>
     </ul>
 
-    <h2>6. What happens if rules are broken</h2>
-    <p>We may remove or hide a listing at any time, with or without warning, whether or not we checked it before it went live. Listings are not endorsements, and we do not review every site in advance.</p>
+    <h2 id="after">After you pay</h2>
     <ul>
-      <li>A listing removed for breaking these rules is <strong>not refunded</strong>, as set out in our <a href="/terms.html">Terms</a>.</li>
-      <li>Repeated or serious breaches may lead to you being blocked from the Site.</li>
+      <li>Your listing is public. Clicks go to the address you submitted.</li>
+      <li>A completed payment is what claims the rank. Payments cannot be cancelled once your listing is live, except in the cases in our <a href="/refunds.html">Refund Policy</a>.</li>
+      <li>Prices are shown in US dollars. If you pay in another currency, the amount you will be charged is shown at checkout before you pay.</li>
+      <li>Paying means you agree to our <a href="/terms.html">Terms</a> and <a href="/privacy.html">Privacy Policy</a>.</li>
+    </ul>
+
+    <h2>Removals, reports and appeals</h2>
+    <ul>
+      <li>We may remove or hide any listing at any time, whether or not we checked it first. Listings are not endorsements.</li>
+      <li>A listing removed for breaking these rules is <strong>not refunded</strong>, as set out in our <a href="/terms.html">Terms</a>. Repeated or serious breaches can lead to a block from Peakfy.</li>
       <li>Where the law requires it, we may report unlawful content to the authorities.</li>
+      <li><strong>See a listing that breaks the rules?</strong> Tell us through the <a href="/contact.html">Contact page</a> with its website address and what is wrong.</li>
+      <li><strong>Think we removed yours by mistake?</strong> Write to us the same way, and we will take another look.</li>
     </ul>
 
-    <h2>7. Reporting a listing</h2>
-    <p>If you see a listing that breaks these rules, tell us through our <a href="/contact.html">Contact page</a>. Please include the listing’s website address and a short note on what is wrong. We review reports and act on those that break the rules.</p>
-
-    <h2>8. Disagree with a removal?</h2>
-    <p>If you think we removed your listing by mistake, write to us through the <a href="/contact.html">Contact page</a> with the listing’s website address and why you think it follows the rules. We will take another look.</p>
-
-    <h2>9. Changes</h2>
-    <p>We may update these rules from time to time. The date at the top shows when they were last changed.</p>
+    <h2>Changes</h2>
+    <p>We may update these rules from time to time. The date below shows when they were last changed.</p>
+    <p style="color:var(--mute);font-size:14px">Last updated: November 6, 2026</p>
   </div>
 </div>
 </body>

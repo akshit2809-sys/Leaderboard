@@ -51,7 +51,7 @@ export async function onRequestPost({ request, env }) {
   if (!res.ok || !d.checkout_url) {
     console.error('dodo error', res.status, JSON.stringify(d));
     await sb(env, 'rpc/close_order', { method: 'POST', body: { p_order: row.id, p_status: 'failed' } });
-    return json({ error: 'The payment provider could not start the payment. Please try again.' }, 502);
+    return json({ error: 'The payment provider could not start the payment. Please try again.', detail: S.payments_open ? undefined : { status: res.status, body: d } }, 502);
   }
   await sb(env, 'orders?id=eq.' + row.id, { method: 'PATCH', body: { status: 'redirected' } });
   return json({ url: d.checkout_url });

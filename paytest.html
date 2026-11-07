@@ -1,0 +1,18 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Payment test</title>
+<style>body{font:16px system-ui;max-width:480px;margin:30px auto;padding:0 16px}label{display:block;margin:10px 0 2px;font-weight:600}input{width:100%;padding:9px;font:inherit}button{margin-top:16px;padding:12px 18px;font:inherit;font-weight:700}#m{color:#b00;margin-top:10px}</style></head><body>
+<h1>Payment test</h1><p>Test mode only. Leave "Listing ID" empty to add a new listing.</p>
+<label>Test password<input id="k" type="password"></label>
+<label>Amount (whole USD)<input id="a" type="number" min="1" value="5"></label>
+<label>First name<input id="f"></label><label>Last name<input id="l"></label><label>Email<input id="e" type="email"></label>
+<label>Listing ID (optional, to add money to an existing listing)<input id="id"></label>
+<label>New listing name<input id="n"></label><label>New listing website<input id="u" placeholder="https://"></label><label>Pitch<input id="p"></label>
+<button id="go">Pay</button><div id="m"></div>
+<script>
+document.getElementById('go').onclick=async function(){
+  var g=function(i){return document.getElementById(i).value.trim()},m=document.getElementById('m');m.textContent='Starting…';
+  var b={test_key:g('k'),amount:Number(g('a')),first_name:g('f'),last_name:g('l'),email:g('e')};
+  if(g('id'))b.listing_id=g('id');else{b.name=g('n');b.url=g('u');b.pitch=g('p')}
+  try{var r=await fetch('/api/checkout',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(b)});var d=await r.json();
+    if(d.url)location.href=d.url;else m.textContent=d.error||'Something went wrong.'}catch(e){m.textContent='Network error.'}
+};
+</script></body></html>

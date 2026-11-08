@@ -27,7 +27,7 @@ export async function onRequestPost({ request, env }) {
     if (!freeNow && amount < (S.min_new_price || 5)) return json({ error: 'New listings start at $' + (S.min_new_price || 5) + '.' }, 400);
     const name = String(b.name || '').trim().slice(0, 60), pitch = String(b.pitch || '').trim().slice(0, 140);
     let url; try { const u = new URL(String(b.url || '').trim()); if (!/^https?:$/.test(u.protocol)) throw 0; url = u.href; } catch { return json({ error: 'Enter a full website address starting with https://' }, 400); }
-    if (!name) return json({ error: 'Add a name for your listing.' }, 400);
+    if (!name) return json({ error: 'Add a name for your listing.' }, 400);     const host = new URL(url).hostname.replace(/^www\./, '').toLowerCase();     const bl = await (await sb(env, 'blocked_domains?select=domain')).json();     if (Array.isArray(bl) && bl.some(x => host === x.domain || host.endsWith('.' + x.domain))) return json({ error: 'That kind of link can’t be listed. See our Rules.' }, 400);
     const dup = await (await sb(env, 'listings?select=id&url=eq.' + encodeURIComponent(url))).json();
     if (Array.isArray(dup) && dup.length) return json({ error: 'That website is already listed. Use Add money on its row.' }, 400);
     Object.assign(order, { new_name: name, new_url: url, new_pitch: pitch || null });

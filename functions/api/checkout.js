@@ -24,7 +24,7 @@ export async function onRequestPost({ request, env }) {
     if (!Array.isArray(rows) || !rows.length) return json({ error: 'That listing is not available.' }, 400);
     order.listing_id = b.listing_id;
   } else {
-    if (amount < (S.min_new_price || 5)) return json({ error: 'New listings start at $' + (S.min_new_price || 5) + '.' }, 400);
+    if (amount < (S.min_new_price || 1)) return json({ error: 'New listings start at $' + (S.min_new_price || 5) + '.' }, 400);
     const name = String(b.name || '').trim().slice(0, 60), pitch = String(b.pitch || '').trim().slice(0, 140);
     let url; try { const u = new URL(String(b.url || '').trim()); if (!/^https?:$/.test(u.protocol)) throw 0; url = u.href; } catch { return json({ error: 'Enter a full website address starting with https://' }, 400); }
     if (!name) return json({ error: 'Add a name for your listing.' }, 400);     const host = new URL(url).hostname.replace(/^www\./, '').toLowerCase();     const bl = await (await sb(env, 'blocked_domains?select=domain')).json();     if (Array.isArray(bl) && bl.some(x => host === x.domain || host.endsWith('.' + x.domain))) return json({ error: 'That kind of link can’t be listed. See our Rules.' }, 400);

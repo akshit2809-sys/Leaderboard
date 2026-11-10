@@ -320,7 +320,7 @@ footer{margin-top:36px;color:var(--mute);font-size:13px} .amt .v::before,.beat .
     if(!feed.length)f.appendChild(el('li',null,'No payments yet.'));
     feed.forEach(function(p){f.appendChild(el('li',null,((p.listings&&p.listings.name)||'A listing')+' paid $'+p.amount+' · '+ago(p.created_at)))});
     var c=0,t=0;rows.forEach(function(l){c+=l.clicks;t+=l.total_paid});
-    $('stats').textContent=rows.length+' listings · $'+t+' paid in total';
+    $('stats').textContent=rows.length+' listings · '+(window.PK_V!=null?window.PK_V.toLocaleString():'…')+' total visits · $'+t+' paid in total';
   }
 
   function click(l){

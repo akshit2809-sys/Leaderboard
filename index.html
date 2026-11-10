@@ -133,8 +133,8 @@ footer{margin-top:36px;color:var(--mute);font-size:13px} .amt .v::before,.beat .
     <div class="beat"><span>Price to take #1:</span><div class="n" id="beat">1</div></div>
     <div class="king">
       <span class="crown">👑</span>
-      <div class="grow"><div class="kl">Reigning #1</div><div class="kn" id="kn">Nobody yet</div></div>
-      <button class="btn gold" id="take" type="button">Take the throne</button>
+      <div class="grow"><div class="kl">Top spot right now</div><div class="kn" id="kn">Nobody yet</div></div>
+      <button class="btn gold" id="take" type="button">Take the #1 spot</button>
     </div>
     <div class="panel">
       <form id="form" novalidate>
@@ -261,7 +261,7 @@ footer{margin-top:36px;color:var(--mute);font-size:13px} .amt .v::before,.beat .
 
     var top=rows.length?rows[0].total_paid:0;
     countTo($('beat'),prev.beat,top+1);prev.beat=top+1;
-    $('kn').textContent=rows.length?rows[0].name+' · '+rows[0].total_paid+' credits':'Nobody yet. The throne is empty.';
+    $('kn').textContent=rows.length?rows[0].name+' · '+'$'+rows[0].total_paid:'Nobody yet. The top spot is open.';
 
     var ol=$('board');ol.textContent='';
     if(!rows.length)ol.appendChild(el('li','pitch','No listings yet. Be the first to claim #1.'));

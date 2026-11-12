@@ -1,6 +1,6 @@
 import { json, sb, UUID } from '../_lib.js';
 
-export async function onRequestPost({ request, env }) {
+export async function onRequestPost(ctx) {   try { return await handle(ctx); }   catch (e) { console.error('checkout crash', e && e.stack || e); return json({ error: 'Something went wrong starting the payment.', detail: String((e && e.message) || e) }, 500); } } async function handle({ request, env }) {
   let b; try { b = await request.json(); } catch { return json({ error: 'Bad request' }, 400); }
 
   let S = {};
